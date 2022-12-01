@@ -51,9 +51,8 @@ const movieSchema = new Schema({
     ref: 'user',
   },
   movieId: {
-    type: String,
+    type: Number,
     required: true,
-    ref: '', // ?? что писать? id фильма, который содержится в ответе сервиса MoviesExplorer.
   },
   nameRU: {
     type: String,

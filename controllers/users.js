@@ -55,13 +55,7 @@ module.exports.logOut = (req, res, next) => {
 module.exports.getMyInfo = (req, res, next) => {
   User.findById(req.user._id).orFail(new Error404(errorMessage.notFoundUser))
     .then((data) => res.send({ email: data.email, name: data.name }))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new Error400(errorMessage.castError));
-      } else {
-        next(err);
-      }
-    });
+    .catch((err) => next(err));
 };
 
 module.exports.correctMyInfo = (req, res, next) => {
@@ -78,6 +72,9 @@ module.exports.correctMyInfo = (req, res, next) => {
       }
       if (err.name === 'CastError') {
         return next(new Error400(errorMessage.castError));
+      }
+      if (err.code === 11000) {
+        return next(new Error409(errorMessage.emailExistError));
       }
       return next(err);
     });

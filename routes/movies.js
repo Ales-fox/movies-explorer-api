@@ -16,7 +16,7 @@ router.post('/', celebrate({
     image: Joi.string().required().min(4).pattern(linkPatternValidation),
     trailerLink: Joi.string().required().min(4).pattern(linkPatternValidation),
     thumbnail: Joi.string().required().min(4).pattern(linkPatternValidation),
-    movieId: Joi.string().required().hex().length(24),
+    movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }).unknown(true),
@@ -24,7 +24,7 @@ router.post('/', celebrate({
 
 router.delete('/:movieId', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().required().hex().length(24),
+    movieId: Joi.number().required(),
   }).unknown(true),
 }), deleteMovie);
 

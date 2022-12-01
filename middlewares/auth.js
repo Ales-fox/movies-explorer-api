@@ -4,7 +4,7 @@ const { errorMessage, SECRET_JWT_DEV } = require('../constants');
 
 const auth = (req, res, next) => {
   if (!req.cookies.jwt) {
-    return next(new Error401(errorMessage.errorAuth));
+    return next(new Error401(errorMessage.errorAuth2));
   }
   const token = req.cookies.jwt;
   let payload;
@@ -13,7 +13,7 @@ const auth = (req, res, next) => {
   try {
     payload = jwt.verify(token, (NODE_ENV === 'production' ? JWT_SECRET : SECRET_JWT_DEV));
   } catch (err) {
-    return next(new Error401(errorMessage.errorAuth));
+    return next(new Error401(errorMessage.errorAuth2));
   }
 
   req.user = payload;

@@ -8,9 +8,6 @@
 		{
 			"allow": ["_id"]
 		}
-	],
-  "no-console": "off",
-  "linebreak-style": [0 ,"error", "windows"],
-  "eol-last": ["error", "never"]
+	]
   }
 }

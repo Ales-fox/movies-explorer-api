@@ -5,9 +5,10 @@ const { errors } = require('celebrate');
 require('dotenv').config();// Модуль для работы с переменной окружения process.env
 const router = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const centralError = require('./middlewares/centralError');
 const { allowedCors } = require('./constants');
 
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
+const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/moviesdb' } = process.env;
 // Подключение базы данных
 mongoose.connect(MONGO_URL);
 
@@ -46,13 +47,7 @@ app.use(router);
 app.use(errorLogger); //  Логгер ошибок. Подключаем после обр-в роутов и до обр-в ошибок
 app.use(errors()); // Обработчик ошибок celebrate
 // Централизованный обработчик ошибок, находится ниже всех но до PORT
-app.use((err, req, res, next) => {
-  // если у ошибки нет статуса, выставляем 500
-  const { statusCode = 500, message } = err;
-
-  res.status(statusCode).send({ message }); // При отс-вии err в работе заменить messag на станд-ный
-  next();
-});
+app.use(centralError);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

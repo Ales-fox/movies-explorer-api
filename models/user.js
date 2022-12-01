@@ -25,12 +25,10 @@ const userSchema = new Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: 'Имя',
   },
 }, { versionKey: false });
 
 // Функция проверки email и пароля
-// eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
