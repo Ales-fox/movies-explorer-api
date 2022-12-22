@@ -38,7 +38,8 @@ module.exports.login = (req, res, next) => {
       // аутентификация успешна
       const { NODE_ENV = 'development', JWT_SECRET = 'Key-secret' } = process.env;
       const token = jwt.sign({ _id: user._id }, (NODE_ENV === 'production' ? JWT_SECRET : SECRET_JWT_DEV), { expiresIn: '7d' }); // в течение 7 дней токен будет действителен
-      res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true });
+      res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: 'none' });
+      /* res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true }); */
       res.status(200).send({ token });
     })
     .catch((err) => next(err));
