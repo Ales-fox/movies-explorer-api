@@ -20,7 +20,7 @@ module.exports.postMovie = (req, res, next) => {
     image,
     trailerLink,
     thumbnail,
-    movieId,
+    id,
     nameRU,
     nameEN,
   } = req.body;
@@ -35,7 +35,7 @@ module.exports.postMovie = (req, res, next) => {
     trailerLink,
     thumbnail,
     owner: req.user._id,
-    movieId,
+    id,
     nameRU,
     nameEN,
   })
@@ -50,13 +50,13 @@ module.exports.postMovie = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
   // Если функция не находит эл-т с таким id, то метод orFail создает ошибку и кидает в блок catch
-  Movie.findById(req.params.movieId)
+  Movie.findById(req.params._id)
     .orFail(new Error404(errorMessage.notFoundMovie))
     .then((movie) => {
-      if (movie.owner._id.toHexString() !== req.user._id) {
+      if (movie.owner.toHexString() !== req.user._id) {
         throw new Error403(errorMessage.forbiddenError);
       }
-      return Movie.findByIdAndRemove(req.params.movieId);
+      return Movie.findByIdAndRemove(req.params._id);
     })
     .then((deleteData) => {
       res.send(deleteData);

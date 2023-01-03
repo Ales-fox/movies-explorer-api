@@ -38,10 +38,10 @@ module.exports.login = (req, res, next) => {
       // аутентификация успешна
       const { NODE_ENV = 'development', JWT_SECRET = 'Key-secret' } = process.env;
       const token = jwt.sign({ _id: user._id }, (NODE_ENV === 'production' ? JWT_SECRET : SECRET_JWT_DEV), { expiresIn: '7d' }); // в течение 7 дней токен будет действителен
-      res.cookie('jwt', token, {
+      /* res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7, httpOnly: true, secure: true, sameSite: 'None',
-      });
-      /* res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true }); */
+      }); */ // Для тестирования локальной версии
+      res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true });
       res.status(200).send({ token });
     })
     .catch((err) => next(err));
@@ -57,7 +57,7 @@ module.exports.logOut = (req, res, next) => {
 
 module.exports.getMyInfo = (req, res, next) => {
   User.findById(req.user._id).orFail(new Error404(errorMessage.notFoundUser))
-    .then((data) => res.send({ email: data.email, name: data.name }))
+    .then((data) => res.send(data))
     .catch((err) => next(err));
 };
 

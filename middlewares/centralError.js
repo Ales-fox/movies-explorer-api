@@ -6,7 +6,7 @@ const centralError = (err, req, res, next) => {
 
   res.status(statusCode).send({
     message: statusCode === 500
-      ? errorMessage.serverError
+      ? errorMessage.serverError // message
       : message,
   });
   next();
